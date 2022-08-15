@@ -2,7 +2,7 @@ const translation = {
     "ru": {
         greeting: ["Доброе утро", "Добрый день", "Добрый вечер", "Доброй ночи"],
         placeholderName: "[Введите имя]",
-        defaultCity: "Минск",
+        defaultCity: "минск",
         placeholderCity: "Введите город",
         windSpeed: "Скорость ветра",
         windSpeedUnit: "m/s",
@@ -31,7 +31,7 @@ const translation = {
         greeting: ["Good morning", "Good afternoon", "Good evening", "Good night"],
         timeOfDay: ["morning", "afternoon", "evening", "night"],
         placeholderName: "[Enter name]",
-        defaultCity: "Minsk",
+        defaultCity: "minsk",
         placeholderCity: "Enter city",
         windSpeed: "Wind speed",
         windSpeedUnit: "м/с",

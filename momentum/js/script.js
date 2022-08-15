@@ -33,7 +33,7 @@ const translatePlaceholders = lang => {
 }
 
 const translateDefaultCity = lang => {
-    if (city.value === translation['ru'].defaultCity || city.value === translation['en'].defaultCity)
+    if (String(city.value).toLowerCase() === translation['ru'].defaultCity || String(city.value).toLowerCase() === translation['en'].defaultCity)
         city.value = translation[lang].defaultCity;
 }
 
@@ -530,16 +530,21 @@ function setLocalStorage() {
 window.addEventListener('beforeunload', setLocalStorage);
 
 function getLocalStorage() {
-    lang = localStorage.getItem('lang');
+
+    if (localStorage.getItem('lang')) {
+        lang = localStorage.getItem('lang');
+    }
 
     if (localStorage.getItem('name')) {
         name.value = localStorage.getItem('name');
     }
 
-    if (localStorage.getItem('city') !== 'null') {
+    if (localStorage.getItem('city') !== null) {
         city.value = localStorage.getItem('city');
+        getWeather(lang);
     } else {
         city.value = 'Minsk';
+        getWeather(lang);
     }
 
     parsedSettings = JSON.parse(localStorage.getItem('settings'));
@@ -549,11 +554,12 @@ function getLocalStorage() {
     console.log(parsedSettings)
 }
 
+
+loadTrack(playNum);
+translatePlaceholders(lang);
+getQuotes(lang);
+translateSettings(lang);
+
 window.addEventListener('load', () => {
     getLocalStorage();
-    getWeather(lang);
-    loadTrack(playNum);
-    translatePlaceholders(lang);
-    getQuotes(lang);
-    translateSettings(lang);
 });
