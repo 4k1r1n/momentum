@@ -615,7 +615,7 @@ body::before {
   color: #939393;
 }
 
-input[type='checkbox'] {
+.input {
   position: absolute;
   opacity: 0;
   width: 20px;
@@ -623,13 +623,13 @@ input[type='checkbox'] {
   cursor: pointer;
 }
 
-input[type='checkbox']+.label {
+.input+.label {
   display: inline-flex;
   align-items: center;
   user-select: none;
 }
 
-input[type='checkbox']+.label::before {
+.input+.label::before {
   content: "";
   display: inline-block;
   width: 16px;
@@ -644,7 +644,7 @@ input[type='checkbox']+.label::before {
   background-size: 50% 50%;
 }
 
-input[type='checkbox']:checked+.label::before {
+.input:checked+.label::before {
   box-shadow: none;
   background-image: url("../assets/svg/checkbox.svg");
   background-size: 25px;

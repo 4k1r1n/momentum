@@ -10,6 +10,7 @@ const main = document.querySelector('.main'),
 const changeLangBtn = popUp.querySelector('.settings-right-conrol');
 
 let lang = 'en';
+let photoSource = 'github';
 
 const changeLang = () => {
     lang === 'en' ? lang = 'ru' : lang = 'en';
@@ -97,10 +98,7 @@ showTime();
 const name = main.querySelector('.name');
 
 //Slider
-const githubSource = popUp.querySelector('#github-source'),
-    unsplashSource = popUp.querySelector('#unsplash-source'),
-    flickrSource = popUp.querySelector('#flickr-source');
-
+const photoSources = document.getElementsByName('photo-source');
 let randomNum;
 
 function getRandomNum() {
@@ -108,50 +106,30 @@ function getRandomNum() {
 }
 getRandomNum();
 
-// const sources = document.getElementsByName('source')
-
-// sources.forEach(source => {
-//     source.addEventListener('change', e => {
-//         if (e.target === githubSource && e.target.checked) {
-//             setGithubBg();
-//         } else if (e.target === unsplashSource && e.target.checked) {
-//             getLinkToImage('unsplash');
-//         } else if (e.target === flickrSource && e.target.checked) {
-//             getLinkToImage('flickr');
-//         }
-//     })
-// })
-
-const setGithubBg = () => {
+async function getLinkToImage(photoSource) {
     const timeOfDay = getTimeOfDay(),
         bgNum = String(randomNum).padStart(2, '0'),
         img = new Image();
 
-    img.src = `https://raw.githubusercontent.com/4k1r1n/momentum-backgrounds/main/${timeOfDay}/${bgNum}.webp`;
-    img.onload = () => {
-        body.style.backgroundImage = `url(${img.src})`;
-    };
-}
-
-async function getLinkToImage(photoSource) {
-    const timeOfDay = getTimeOfDay();
-
     let url;
 
-    if (photoSource === 'unsplash') {
-        url = `https://api.unsplash.com/photos/random?orientation=landscape&query=${timeOfDay}&client_id=nzyoPf36M1-WxjrvPbm8xgCsC8SZBssdo755IQ-OlCU`;
-    } else if (photoSource === 'flickr') {
-        url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=a6f2985424a166a4f53d3760a63f2b82&tags=${timeOfDay}&extras=url_l&format=json&nojsoncallback=1&tag_mode=all&sort=relevance&per_page=500&extras=url_h`
-    }
+    let res, data
 
-    const res = await fetch(url),
+    if (photoSource === 'github') {
+        img.src = `https://raw.githubusercontent.com/4k1r1n/momentum-backgrounds/main/${timeOfDay}/${bgNum}.webp`;
+    } else if (photoSource === 'unsplash') {
+        url = `https://api.unsplash.com/photos/random?orientation=landscape&query=${timeOfDay}&client_id=nzyoPf36M1-WxjrvPbm8xgCsC8SZBssdo755IQ-OlCU`;
+
+        res = await fetch(url);
         data = await res.json();
 
-    const img = new Image();
-
-    if (photoSource === 'unsplash') {
         img.src = data.urls.regular;
     } else {
+        url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=a6f2985424a166a4f53d3760a63f2b82&tags=${timeOfDay}&extras=url_l&format=json&nojsoncallback=1&tag_mode=all&sort=relevance&per_page=500&extras=url_h`;
+
+        res = await fetch(url);
+        data = await res.json();
+
         const flickrFilterPhotos = data.photos.photo.filter(photo => {
             return photo.width_h === 1600 && photo.height_h === 1067;
         })
@@ -165,24 +143,24 @@ async function getLinkToImage(photoSource) {
 }
 
 const getSlideNext = () => {
-    if (flickrSource.checked) {
-        getLinkToImage('flickr');
-    } else if (unsplashSource.checked) {
+    if (photoSource === 'github') {
+        randomNum === 20 ? randomNum = 1 : randomNum++;
+        getLinkToImage('github');
+    } else if (photoSource === 'unsplash') {
         getLinkToImage('unsplash');
     } else {
-        randomNum === 20 ? randomNum = 1 : randomNum++;
-        setGithubBg();
+        getLinkToImage('flickr');
     }
 }
 
 const getSlidePrev = () => {
-    if (flickrSource.checked) {
-        getLinkToImage('flickr');
-    } else if (unsplashSource.checked) {
+    if (photoSource === 'github') {
+        randomNum === 1 ? randomNum = 20 : randomNum--;
+        getLinkToImage('github');
+    } else if (photoSource === 'unsplash') {
         getLinkToImage('unsplash');
     } else {
-        randomNum === 1 ? randomNum = 20 : randomNum--;
-        setGithubBg();
+        getLinkToImage('flickr');
     }
 }
 
@@ -192,24 +170,22 @@ const slideNext = main.querySelector('.slide-next'),
 slideNext.addEventListener('click', getSlideNext);
 slidePrev.addEventListener('click', getSlidePrev);
 
-// setGithubBg();
 
-githubSource.addEventListener('change', e => {
-    unsplashSource.checked = false;
-    flickrSource.checked = false;
-    if (e.target.checked) setGithubBg();
-});
+const changeBg = (photoSource) => {
+    if (photoSource === 'github') {
+        getLinkToImage('github');
+    } else if (photoSource === 'unsplash') {
+        getLinkToImage('unsplash');
+    } else {
+        getLinkToImage('flickr');
+    }
+}
 
-unsplashSource.addEventListener('change', e => {
-    flickrSource.checked = false;
-    githubSource.checked = false;
-    if (e.target.checked) getLinkToImage('unsplash');
-});
-
-flickrSource.addEventListener('change', e => {
-    githubSource.checked = false;
-    unsplashSource.checked = false;
-    if (e.target.checked) getLinkToImage('flickr');
+photoSources.forEach(source => {
+    source.addEventListener('change', (e) => {
+        photoSource = e.target.value;
+        changeBg(photoSource);
+    })
 })
 
 
@@ -509,52 +485,49 @@ const toggleWidgets = () => {
     })
 }
 
-toggleWidgets();
+toggleWidgets()
 
 //Local Storage
-// let settings = {
-//     "githubSource": githubSource.checked,
-//     "unsplashSource": unsplashSource.checked,
-//     "flickrSource": flickrSource.checked,
+// let inputs = popUp.querySelectorAll('input[type="checkbox"]');
 
-//     "timeCheckbox": timeCheckbox.checked,
-//     "dateCheckbox": dateCheckbox.checked,
-//     "greetingCheckbox": greetingCheckbox.checked,
-//     "quoteCheckbox": quoteCheckbox.checked,
-//     "weatherCheckbox": weatherCheckbox.checked,
-//     "audioPlayerCheckbox": audioPlayerCheckbox.checkbox,
-// }
-let inputs = popUp.querySelectorAll('input[type="checkbox"]');
+// let settings = [];
 
-let settings = [];
-
-// inputs.forEach(setting => {
-//     setting.addEventListener('change', (event) => {
-//         settings.push({ id: event.target.id, chacked: event.target.checked })
-//         localStorage.setItem('settings', JSON.stringify(settings))
+// inputs.forEach(checkbox => {
+//     checkbox.addEventListener('change', (event) => {
+//         settings.push({ id: event.target.id, checked: event.target.checked })
+//         localStorage.setItem('settings', JSON.stringify(settings));
+//         console.log(settings)
 //     })
-// });
+// })
 
 function setLocalStorage() {
     localStorage.setItem('city', city.value);
     localStorage.setItem('lang', lang);
     localStorage.setItem('name', name.value);
-
-    // localStorage.setItem('settings', JSON.stringify(settings))
-
-    // localStorage.setItem('unsplashSource', unsplashSource.checked);
-    // localStorage.setItem('githubSource', githubSource.checked);
-    // localStorage.setItem('flickrSource', flickrSource.checked)
+    localStorage.setItem('photoSource', photoSource);
 
     // localStorage.setItem('settings', JSON.stringify(settings));
-
 }
 
 window.addEventListener('beforeunload', setLocalStorage);
 
 function getLocalStorage() {
+    // let parsedsSettings = JSON.parse(localStorage.getItem('settings'));
+
     if (localStorage.getItem('lang')) {
         lang = localStorage.getItem('lang');
+    }
+
+    if (localStorage.getItem('photoSource')) {
+        photoSource = localStorage.getItem('photoSource');
+
+        if (photoSource === 'github') {
+            document.querySelector('#github-source').checked = true;
+        } else if (photoSource === 'unsplash') {
+            document.querySelector('#unsplash-source').checked = true;
+        } else {
+            document.querySelector('#flickr-source').checked = true;
+        }
     }
 
     if (localStorage.getItem('name')) {
@@ -569,23 +542,8 @@ function getLocalStorage() {
         getWeather(lang);
     }
 
-    // let parsedsSettings = JSON.parse(localStorage.getItem('settings'));
-
     // parsedsSettings.forEach(setting => document.getElementById(setting.id).checked = setting.checked);
-    // let parsedUnsplash = JSON.parse(localStorage.getItem('unsplashSource'));
-    // unsplashSource.checked = parsedUnsplash;
-
-    // let parsedGithubSource = JSON.parse(localStorage.getItem('githubSource'));
-    // unsplashSource.checked = parsedGithubSource;
-
-    // let parsedFlickr = JSON.parse(localStorage.getItem('flickrSource'));
-    // unsplashSource.checked = parsedFlickr;
-
-    // let parsedSettings = JSON.parse(localStorage.getItem('settings'));
-    // settings.githubSource = parsedSettings.githubSource;
 }
-
-
 
 window.addEventListener('load', () => {
     getLocalStorage();
@@ -593,4 +551,5 @@ window.addEventListener('load', () => {
     translatePlaceholders(lang);
     getQuotes(lang);
     translateSettings(lang);
+    getLinkToImage(photoSource);
 });
