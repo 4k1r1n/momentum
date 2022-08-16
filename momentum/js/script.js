@@ -1,16 +1,10 @@
 import playList from './playList.js';
 import translation from './translation.js';
-// import storage from './storage.js';
-
 
 const main = document.querySelector('.main'),
     body = document.querySelector('body'),
     footer = document.querySelector('.footer'),
     popUp = body.querySelector('.pop-up');
-
-const state = {
-    photoSource: ['github', 'unsplash', 'flickr'],
-}
 
 //Translation
 const changeLangBtn = popUp.querySelector('.settings-right-conrol');
@@ -53,7 +47,7 @@ function showTime() {
     showGreeting(lang);
 }
 
-// //Date 
+//Date 
 const date = main.querySelector('.date');
 
 function showDate(lang) {
@@ -85,8 +79,7 @@ const getTimeOfDay = () => {
     }
 }
 
-const greeting = main.querySelector('.greeting'),
-    greetingWidget = main.querySelector('.greeting-container');
+const greeting = main.querySelector('.greeting');
 
 function showGreeting(lang) {
     const timeOfDay = getTimeOfDay();
@@ -104,17 +97,30 @@ showTime();
 const name = main.querySelector('.name');
 
 //Slider
-const githubSource = popUp.querySelector('#github'),
-    unsplashSource = popUp.querySelector('#unsplash'),
-    flickrSource = popUp.querySelector('#flickr');
+const githubSource = popUp.querySelector('#github-source'),
+    unsplashSource = popUp.querySelector('#unsplash-source'),
+    flickrSource = popUp.querySelector('#flickr-source');
 
 let randomNum;
 
 function getRandomNum() {
     randomNum = String(Math.floor(Math.random() * 20) + 1);
 }
-
 getRandomNum();
+
+// const sources = document.getElementsByName('source')
+
+// sources.forEach(source => {
+//     source.addEventListener('change', e => {
+//         if (e.target === githubSource && e.target.checked) {
+//             setGithubBg();
+//         } else if (e.target === unsplashSource && e.target.checked) {
+//             getLinkToImage('unsplash');
+//         } else if (e.target === flickrSource && e.target.checked) {
+//             getLinkToImage('flickr');
+//         }
+//     })
+// })
 
 const setGithubBg = () => {
     const timeOfDay = getTimeOfDay(),
@@ -132,10 +138,10 @@ async function getLinkToImage(photoSource) {
 
     let url;
 
-    if (photoSource === state.photoSource[1]) {
+    if (photoSource === 'unsplash') {
         url = `https://api.unsplash.com/photos/random?orientation=landscape&query=${timeOfDay}&client_id=nzyoPf36M1-WxjrvPbm8xgCsC8SZBssdo755IQ-OlCU`;
-    } else {
-        url = `https://api.unsplash.com/photos/random?orientation=landscape&query=${timeOfDay}&client_id=nzyoPf36M1-WxjrvPbm8xgCsC8SZBssdo755IQ-OlCU`
+    } else if (photoSource === 'flickr') {
+        url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=a6f2985424a166a4f53d3760a63f2b82&tags=${timeOfDay}&extras=url_l&format=json&nojsoncallback=1&tag_mode=all&sort=relevance&per_page=500&extras=url_h`
     }
 
     const res = await fetch(url),
@@ -143,7 +149,16 @@ async function getLinkToImage(photoSource) {
 
     const img = new Image();
 
-    img.src = data.urls.regular;
+    if (photoSource === 'unsplash') {
+        img.src = data.urls.regular;
+    } else {
+        const flickrFilterPhotos = data.photos.photo.filter(photo => {
+            return photo.width_h === 1600 && photo.height_h === 1067;
+        })
+
+        img.src = flickrFilterPhotos[String(Math.floor(Math.random() * flickrFilterPhotos.length + 1))].url_h;
+    }
+
     img.onload = () => {
         body.style.backgroundImage = `url(${img.src})`;
     };
@@ -151,9 +166,9 @@ async function getLinkToImage(photoSource) {
 
 const getSlideNext = () => {
     if (flickrSource.checked) {
-        getLinkToImage(state.photoSource[1]);
+        getLinkToImage('flickr');
     } else if (unsplashSource.checked) {
-        getLinkToImage(state.photoSource[2]);
+        getLinkToImage('unsplash');
     } else {
         randomNum === 20 ? randomNum = 1 : randomNum++;
         setGithubBg();
@@ -162,9 +177,9 @@ const getSlideNext = () => {
 
 const getSlidePrev = () => {
     if (flickrSource.checked) {
-        getLinkToImage(state.photoSource[1]);
+        getLinkToImage('flickr');
     } else if (unsplashSource.checked) {
-        getLinkToImage(state.photoSource[2]);
+        getLinkToImage('unsplash');
     } else {
         randomNum === 1 ? randomNum = 20 : randomNum--;
         setGithubBg();
@@ -180,21 +195,21 @@ slidePrev.addEventListener('click', getSlidePrev);
 // setGithubBg();
 
 githubSource.addEventListener('change', e => {
-    flickrSource.checked = false;
     unsplashSource.checked = false;
+    flickrSource.checked = false;
     if (e.target.checked) setGithubBg();
 });
 
 unsplashSource.addEventListener('change', e => {
     flickrSource.checked = false;
     githubSource.checked = false;
-    if (e.target.checked) getLinkToImage(state.photoSource[1]);
+    if (e.target.checked) getLinkToImage('unsplash');
 });
 
 flickrSource.addEventListener('change', e => {
     githubSource.checked = false;
     unsplashSource.checked = false;
-    if (e.target.checked) getLinkToImage(state.photoSource[2]);
+    if (e.target.checked) getLinkToImage('flickr');
 })
 
 
@@ -471,13 +486,6 @@ const translateSettings = (lang) => {
 body.addEventListener('click', e => closeSettings(e));
 settingsBtn.addEventListener('click', openSettings);
 
-const timeCheckbox = popUp.querySelector('#time'),
-    dateCheckbox = popUp.querySelector('#date'),
-    greetingCheckbox = popUp.querySelector('#greeting'),
-    quoteCheckbox = popUp.querySelector('#quote'),
-    weatherCheckbox = popUp.querySelector('#weather'),
-    audioPlayerCheckbox = popUp.querySelector('#audio-player');
-
 const hideWidget = (widget) => {
     widget.classList.add('hide');
 }
@@ -487,8 +495,8 @@ const showWidget = (widget) => {
 }
 
 const toggleWidgets = () => {
-    const widgetsCheckboxes = [timeCheckbox, dateCheckbox, greetingCheckbox, quoteCheckbox, weatherCheckbox, audioPlayerCheckbox];
-    const widgets = [time, date, greetingWidget, quoteWidget, weather, audioPlayer];
+    const widgetsCheckboxes = document.getElementsByName('widget');
+    const widgets = [time, date, main.querySelector('.greeting-container'), quoteWidget, weather, audioPlayer];
 
     widgetsCheckboxes.forEach((checkbox, i) => {
         checkbox.addEventListener('change', e => {
@@ -504,33 +512,47 @@ const toggleWidgets = () => {
 toggleWidgets();
 
 //Local Storage
-let settings = {
-    "githubSource": true,
-    "unsplashSource": false,
-    "flickrSource": false,
+// let settings = {
+//     "githubSource": githubSource.checked,
+//     "unsplashSource": unsplashSource.checked,
+//     "flickrSource": flickrSource.checked,
 
-    "timeCheckbox": true,
-    "dateCheckbox": true,
-    "greetingCheckbox": true,
-    "quoteCheckbox": true,
-    "weatherCheckbox": false,
-    "audioPlayerCheckbox": true,
-}
+//     "timeCheckbox": timeCheckbox.checked,
+//     "dateCheckbox": dateCheckbox.checked,
+//     "greetingCheckbox": greetingCheckbox.checked,
+//     "quoteCheckbox": quoteCheckbox.checked,
+//     "weatherCheckbox": weatherCheckbox.checked,
+//     "audioPlayerCheckbox": audioPlayerCheckbox.checkbox,
+// }
+let inputs = popUp.querySelectorAll('input[type="checkbox"]');
 
-let parsedSettings;
+let settings = [];
+
+// inputs.forEach(setting => {
+//     setting.addEventListener('change', (event) => {
+//         settings.push({ id: event.target.id, chacked: event.target.checked })
+//         localStorage.setItem('settings', JSON.stringify(settings))
+//     })
+// });
 
 function setLocalStorage() {
     localStorage.setItem('city', city.value);
     localStorage.setItem('lang', lang);
     localStorage.setItem('name', name.value);
 
-    localStorage.setItem('settings', JSON.stringify(settings));
+    // localStorage.setItem('settings', JSON.stringify(settings))
+
+    // localStorage.setItem('unsplashSource', unsplashSource.checked);
+    // localStorage.setItem('githubSource', githubSource.checked);
+    // localStorage.setItem('flickrSource', flickrSource.checked)
+
+    // localStorage.setItem('settings', JSON.stringify(settings));
+
 }
 
 window.addEventListener('beforeunload', setLocalStorage);
 
 function getLocalStorage() {
-
     if (localStorage.getItem('lang')) {
         lang = localStorage.getItem('lang');
     }
@@ -547,19 +569,28 @@ function getLocalStorage() {
         getWeather(lang);
     }
 
-    parsedSettings = JSON.parse(localStorage.getItem('settings'));
+    // let parsedsSettings = JSON.parse(localStorage.getItem('settings'));
 
-    parsedSettings.audioPlayerCheckbox = audioPlayerCheckbox.checked;
+    // parsedsSettings.forEach(setting => document.getElementById(setting.id).checked = setting.checked);
+    // let parsedUnsplash = JSON.parse(localStorage.getItem('unsplashSource'));
+    // unsplashSource.checked = parsedUnsplash;
 
-    console.log(parsedSettings)
+    // let parsedGithubSource = JSON.parse(localStorage.getItem('githubSource'));
+    // unsplashSource.checked = parsedGithubSource;
+
+    // let parsedFlickr = JSON.parse(localStorage.getItem('flickrSource'));
+    // unsplashSource.checked = parsedFlickr;
+
+    // let parsedSettings = JSON.parse(localStorage.getItem('settings'));
+    // settings.githubSource = parsedSettings.githubSource;
 }
 
 
-loadTrack(playNum);
-translatePlaceholders(lang);
-getQuotes(lang);
-translateSettings(lang);
 
 window.addEventListener('load', () => {
     getLocalStorage();
+    loadTrack(playNum);
+    translatePlaceholders(lang);
+    getQuotes(lang);
+    translateSettings(lang);
 });
