@@ -9,6 +9,17 @@ const main = document.querySelector('.main'),
 //Translation
 const changeLangBtn = popUp.querySelector('.settings-right-conrol');
 
+// let state = {
+//     blocks: {
+//         'time': true,
+//         'date': true,
+//         'greeting': true,
+//         'quote': true,
+//         'weather': true,
+//         'audio': true,
+//     }
+// }
+
 let lang = 'en';
 let photoSource = 'github';
 
@@ -41,7 +52,7 @@ function showTime() {
     const date = new Date(),
         currentTime = date.toLocaleTimeString('ru');
 
-    time.textContent = currentTime;
+    time.textContent = `${currentTime}`;
 
     setTimeout(showTime, 1000);
     showDate(lang);
@@ -66,17 +77,16 @@ const getTimeOfDay = () => {
         hours = date.getHours(),
         hour = Math.floor(hours / 6);
 
-    let timeOfDay;
 
     switch (hour) {
         case 1:
-            return timeOfDay = timeOfDayArr[0];
+            return timeOfDayArr[0];
         case 2:
-            return timeOfDay = timeOfDayArr[1];
+            return timeOfDayArr[1];
         case 3:
-            return timeOfDay = timeOfDayArr[2];
+            return timeOfDayArr[2];
         default:
-            return timeOfDay = timeOfDayArr[3];
+            return timeOfDayArr[3];
     }
 }
 
@@ -88,7 +98,7 @@ function showGreeting(lang) {
     timeOfDayArr.forEach((time, i) => {
         if (time === timeOfDay) {
             let greetingText = `${Object.values(translation[lang].greeting)[i]},`;
-            greeting.textContent = greetingText;
+            greeting.textContent = `${greetingText}`;
         }
     });
 }
@@ -430,6 +440,9 @@ volumeBtn.addEventListener('click', toggleMute);
 // Settings
 const settingsBtn = footer.querySelector('.settings');
 
+const inputs = popUp.querySelectorAll('input[type="checkbox"]'),
+    inputStates = [true, true, true, true, true, true];
+
 const openSettings = () => {
     popUp.classList.add('active');
 }
@@ -470,53 +483,53 @@ const showWidget = (widget) => {
     widget.classList.remove('hide');
 }
 
-const toggleWidgets = () => {
-    const widgetsCheckboxes = document.getElementsByName('widget');
-    const widgets = [time, date, main.querySelector('.greeting-container'), quoteWidget, weather, audioPlayer];
+const widgets = [time, date, main.querySelector('.greeting-container'), quoteWidget, weather, audioPlayer];
 
-    widgetsCheckboxes.forEach((checkbox, i) => {
+const toggleWidgets = () => {
+    inputs.forEach((checkbox, i) => {
         checkbox.addEventListener('change', e => {
             if (!e.target.checked) {
+                inputStates[i] = false;
                 hideWidget(widgets[i]);
             } else {
+                inputStates[i] = true;
                 showWidget(widgets[i]);
             };
         })
     })
 }
 
-toggleWidgets()
-
 //Local Storage
-// let inputs = popUp.querySelectorAll('input[type="checkbox"]');
-
-// let settings = [];
-
-// inputs.forEach(checkbox => {
-//     checkbox.addEventListener('change', (event) => {
-//         settings.push({ id: event.target.id, checked: event.target.checked })
-//         localStorage.setItem('settings', JSON.stringify(settings));
-//         console.log(settings)
-//     })
-// })
-
 function setLocalStorage() {
     localStorage.setItem('city', city.value);
     localStorage.setItem('lang', lang);
     localStorage.setItem('name', name.value);
     localStorage.setItem('photoSource', photoSource);
 
-    // localStorage.setItem('settings', JSON.stringify(settings));
+    inputs.forEach((input, i) => {
+        localStorage.setItem(`${input.id}`, JSON.stringify(inputStates[i]));
+    })
 }
 
 window.addEventListener('beforeunload', setLocalStorage);
 
 function getLocalStorage() {
-    // let parsedsSettings = JSON.parse(localStorage.getItem('settings'));
-
     if (localStorage.getItem('lang')) {
         lang = localStorage.getItem('lang');
     }
+
+    inputs.forEach((input, i) => {
+        if (localStorage.getItem(`${input.id}`)) {
+            inputStates[i] = JSON.parse(localStorage.getItem(`${input.id}`));
+            if (inputStates[i] === false) {
+                input.checked = false;
+                hideWidget(widgets[i]);
+            } else {
+                input.checked = true;
+                showWidget(widgets[i]);
+            }
+        }
+    })
 
     if (localStorage.getItem('photoSource')) {
         photoSource = localStorage.getItem('photoSource');
@@ -541,8 +554,6 @@ function getLocalStorage() {
         city.value = 'Minsk';
         getWeather(lang);
     }
-
-    // parsedsSettings.forEach(setting => document.getElementById(setting.id).checked = setting.checked);
 }
 
 window.addEventListener('load', () => {
@@ -552,4 +563,8 @@ window.addEventListener('load', () => {
     getQuotes(lang);
     translateSettings(lang);
     getLinkToImage(photoSource);
+    toggleWidgets();
+
+    showDate(lang);
+    showGreeting(lang);
 });
