@@ -1,3 +1,6 @@
+import './css/owfont-regular.css';
+import 'normalize.css';
+import './style.css';
 import playList from './data/playList.js';
 import translation from './data/dictionary.js';
 
