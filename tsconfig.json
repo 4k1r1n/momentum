@@ -1,0 +1,19 @@
+{
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "target": "ES2016",
+    "module": "ES6",
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,  
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "removeComments": true,
+  },
+}
