@@ -21,6 +21,19 @@ module.exports = {
     historyApiFallback: true,
     static: path.resolve(__dirname, './dist'),
   },
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        default: {
+          chunks: 'all',
+          enforce: true,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Momentum',
