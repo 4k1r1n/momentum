@@ -1,6 +1,12 @@
 {
-  "include": [".eslintrc.js", "./**/*.ts","./**/*.js"],
-  "exclude": ["node_modules"],
+  "include": [
+    ".eslintrc.js",
+    "./**/*.js",
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
     "target": "ES2016",
     "module": "ES6",
