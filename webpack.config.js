@@ -7,8 +7,8 @@ const isProd = process.env.NODE_ENV === 'production';
 module.exports = {
   mode: isProd ? 'production' : 'development',
   devtool: isProd ? false : 'inline-source-map',
-  context: path.resolve(__dirname, './src'),
-  entry: './app.js',
+  context: path.resolve(__dirname, 'src'),
+  entry: './app.ts',
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: '[name].[contenthash].js',
@@ -19,7 +19,7 @@ module.exports = {
     open: true,
     hot: false,
     historyApiFallback: true,
-    static: path.resolve(__dirname, './dist'),
+    static: path.resolve(__dirname, 'dist'),
   },
   optimization: {
     runtimeChunk: 'single',
@@ -48,7 +48,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts'],
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(__dirname, 'src'),
     },
   },
   module: {
@@ -67,6 +67,7 @@ module.exports = {
         test: /\.(s[ac]|c)ss$/i,
         use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader',
+          'postcss-loader',
           'sass-loader'],
       },
       {
