@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const EslintPlugin = require('eslint-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -44,6 +45,7 @@ module.exports = {
       filename: '[name].[contenthash].css',
     }),
     new EslintPlugin({ extensions: 'ts' }),
+    new Dotenv(),
   ],
   resolve: {
     extensions: ['.js', '.ts'],
