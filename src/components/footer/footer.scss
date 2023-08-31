@@ -1,0 +1,32 @@
+.footer {
+  width: 100%;
+
+  &__wrapper {
+    margin: 0 15px 0;
+  }
+
+  &__copyright {
+    margin-bottom: 10px;
+  }
+
+  &__quote {
+    margin-bottom: 15px;
+  }
+}
+
+.copyright {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.6;
+
+  &__year {
+    font-size: 1.4rem;
+  }
+}
+
+.options {
+  display: flex;
+  gap: 15px;
+}
