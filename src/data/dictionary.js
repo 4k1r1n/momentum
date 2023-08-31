@@ -11,13 +11,11 @@ const dictionary = {
     settingsTitle: 'Настройки',
     changeBtn: 'Изменить',
     language: 'Русский',
-
     settingNames: {
       langSetting: 'Язык (англ/рус)',
       photoSource: 'Источник фоновых изображений',
       widgets: 'Показать виджеты',
     },
-
     widgetsNames: {
       widgetTime: 'Время',
       widgetDate: 'Дата',
@@ -29,7 +27,6 @@ const dictionary = {
   },
   en: {
     greeting: ['Good morning', 'Good afternoon', 'Good evening', 'Good night'],
-    timeOfDay: ['morning', 'afternoon', 'evening', 'night'],
     placeholderName: '[Enter name]',
     defaultCity: 'minsk',
     placeholderCity: 'Enter city',
@@ -40,13 +37,11 @@ const dictionary = {
     settingsTitle: 'Settings',
     changeBtn: 'Change',
     language: 'English',
-
     settingNames: {
       langSetting: 'Language (en/ru)',
       photoSource: 'Background images source',
       widgets: 'Show widgets',
     },
-
     widgetsNames: {
       widgetTime: 'Time',
       widgetDate: 'Date',
