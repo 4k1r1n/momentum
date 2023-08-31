@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const EslintPlugin = require('eslint-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -46,6 +47,11 @@ module.exports = {
     }),
     new EslintPlugin({ extensions: 'ts' }),
     new Dotenv(),
+    new CopyPlugin({
+      patterns: [
+        { from: './data/quotes', to: './data/quotes' },
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.js', '.ts'],
@@ -69,7 +75,6 @@ module.exports = {
         test: /\.(s[ac]|c)ss$/i,
         use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader',
-          'postcss-loader',
           'sass-loader'],
       },
       {
