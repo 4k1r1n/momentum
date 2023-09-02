@@ -1,0 +1,17 @@
+@import '../../../scss/colors.scss';
+
+.greeting {
+  font-size: 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  &__name {
+    max-width: 245px;
+
+    &::placeholder {
+      opacity: 0.6;
+      color: $light;
+    }
+  }
+}
