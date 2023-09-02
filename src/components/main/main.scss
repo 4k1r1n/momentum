@@ -10,6 +10,14 @@
     align-items: center;
   }
 
+  &__slider-buttons {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
   &__date {
     margin-bottom: 10px;
   }
