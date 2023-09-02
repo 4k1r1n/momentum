@@ -1,11 +1,16 @@
 .main {
   display: flex;
   flex-grow: 1;
+  width: 100%;
 
   &__wrapper {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  &__date {
+    margin-bottom: 10px;
   }
 }
