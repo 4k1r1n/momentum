@@ -1,5 +1,6 @@
 import './footer.scss';
 import createNode from '../../utils/create-node';
+import renderQuote from '../widgets/quote/quote';
 
 const renderFooter = (): HTMLElement => {
   const footer = createNode('footer', ['footer']);
@@ -12,10 +13,11 @@ const renderFooter = (): HTMLElement => {
   github.setAttribute('target', '_blank');
   github.setAttribute('href', 'https://github.com/4k1r1n');
   rs.setAttribute('target', '_blank');
-  rs.setAttribute('href', ' href="https://rs.school/js/');
+  rs.setAttribute('href', 'https://rs.school/js/');
+  const quote = renderQuote();
   footer.append(wrapper);
   copyright.append(year, github, rs);
-  wrapper.append(options, copyright);
+  wrapper.append(quote, options, copyright);
   return footer;
 };
 
