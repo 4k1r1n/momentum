@@ -4,7 +4,8 @@
   font-size: 4rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  column-gap: 10px;
+  justify-content: center;
 
   &__name {
     max-width: 245px;
