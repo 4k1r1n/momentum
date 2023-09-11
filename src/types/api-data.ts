@@ -10,6 +10,22 @@ export type FlickrData = {
   };
 };
 
+type OpenWeatherMapWeather = {
+  id: number;
+  description: string;
+};
+
+export type OpenWeatherMapData = {
+  wind: {
+    speed: number;
+  };
+  weather: OpenWeatherMapWeather[];
+  main: {
+    temp: number;
+    humidity: number;
+  };
+};
+
 export type Photo = {
   width_h: number;
   height_h: number;
