@@ -1,0 +1,203 @@
+@import '../../../scss/colors.scss';
+
+.audio-player {
+  width: 280px;
+  height: auto;
+  max-height: 120px;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: $widget-background;
+  backdrop-filter: blur(2px);
+  transition: all 0.4s ease-in-out;
+
+  &.expended {
+    max-height: 240px;
+  }
+
+  &__playlist {
+    opacity: 0;
+    padding: 8px;
+    height: 120px;
+    border-top: 1px solid $primary;
+    transition: height 0.3s ease-in-out;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 3px;
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: $primary;
+      border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $scrollbar-thumb;
+      border-radius: 50px;
+    }
+  }
+
+  &__controls {
+    padding: 0 15px 15px;
+  }
+
+  &__track {
+    display: flex;
+    opacity: 0.8;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 15px 0;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-play {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+}
+
+.playlist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    opacity: 0.8;
+  }
+}
+
+.item {
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: $primary;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_active {
+    background-color: $active-track;
+    transition: all .3s ease-in-out;
+  }
+}
+
+.slider {
+  height: 4px;
+  width: 100%;
+  background-color: $slider-background;
+  border-radius: 50px;
+  cursor: pointer;
+
+  &:hover .amount::before {
+    opacity: 1;
+  }
+}
+
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &__amount {
+    width: 75%;
+  }
+
+  &__slider {
+    width: 0;
+    transition: all .45s ease-in-out;
+
+    &.slider_hovered {
+      width: 40px;
+    }
+  }
+
+  &:hover &__slider {
+    width: 40px;
+  }
+}
+
+.track {
+  font-size: 1.4rem;
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    column-gap: 5px;
+  }
+
+  &__artist {
+    opacity: 0.5;
+  }
+
+  &-slider {
+    margin: 8px 0 12px;
+
+    &:hover .handler {
+      opacity: 1;
+    }
+  }
+
+  &__timer {
+    &::after {
+      content: "/";
+      margin-right: 4px;
+    }
+  }
+}
+
+.amount {
+  position: relative;
+  height: inherit;
+  width: 0;
+  border-radius: inherit;
+  background-color: $light;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 7px;
+    width: 7px;
+    background-color: $light;
+    border-radius: inherit;
+    top: 50%;
+    right: -5px;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+}
+
+.handler {
+  position: absolute;
+  height: 7px;
+  width: 7px;
+  background-color: $light;
+  border-radius: inherit;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
