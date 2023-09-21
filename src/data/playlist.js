@@ -1,32 +1,32 @@
 import downtownGlowSrc from '../assets/sounds/Downtown-Glow.mp3';
-import luminanceSrc from '../assets/sounds/Luminance.mp3';
-import soonFlySrc from '../assets/sounds/Soon-Well-Fly.mp3';
 import stormCloudsSrc from '../assets/sounds/Storm-Clouds.mp3';
+import adriftAmongInfiniteStarsSrc from '../assets/sounds/Adrift-Among-Infinite-Stars.mp3';
+import warmMemoriesSrc from '../assets/sounds/Warm-Memories.mp3';
 
 const playlist = [
   {
     title: 'Downtown Glow',
-    artist: 'Lo-fi',
+    artist: 'Ghostrifter & Devyzed',
     src: downtownGlowSrc,
     duration: '02:52',
   },
   {
-    title: 'Luminance',
-    artist: 'Lo-fi',
-    src: luminanceSrc,
-    duration: '03:12',
-  },
-  {
-    title: "Soon We'll Fly",
-    artist: 'Lo-fi',
-    src: soonFlySrc,
-    duration: '04:24',
+    title: 'Adrift Among Infinite Stars',
+    artist: 'Scott Buckley',
+    src: adriftAmongInfiniteStarsSrc,
+    duration: '06:45',
   },
   {
     title: 'Storm Clouds',
-    artist: 'Lo-fi',
+    artist: 'Purrple Cat',
     src: stormCloudsSrc,
     duration: '02:36',
+  },
+  {
+    title: 'Warm Memories',
+    artist: 'Keys of Moon',
+    src: warmMemoriesSrc,
+    duration: '02:06',
   },
 ];
 
