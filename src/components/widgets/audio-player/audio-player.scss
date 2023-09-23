@@ -8,7 +8,7 @@
   border-radius: 8px;
   background-color: $widget-background;
   backdrop-filter: blur(2px);
-  transition: all 0.4s ease-in-out;
+  transition: max-height 0.4s ease-in-out;
 
   &.expended {
     max-height: 240px;
@@ -86,7 +86,7 @@
 .item {
   cursor: pointer;
   border-radius: 4px;
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
 
   &:hover {
     background-color: $primary;
@@ -99,7 +99,6 @@
 
   &_active {
     background-color: $active-track;
-    transition: all .3s ease-in-out;
   }
 }
 
@@ -126,7 +125,7 @@
 
   &__slider {
     width: 0;
-    transition: all .45s ease-in-out;
+    transition: width .4s ease-in-out;
 
     &.slider_hovered {
       width: 40px;

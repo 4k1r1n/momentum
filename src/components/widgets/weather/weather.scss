@@ -2,8 +2,6 @@
 
 .weather {
   max-width: 200px;
-  min-height: 150px;
-  padding: 15px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +9,6 @@
   background-color: $widget-background;
   backdrop-filter: blur(2px);
   border-radius: 8px;
-  transition: all 0.4s ease-in-out;
   font-size: 1.2rem;
 
   &__temperature {
