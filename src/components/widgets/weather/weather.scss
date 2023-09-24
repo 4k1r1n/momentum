@@ -1,11 +1,11 @@
 @import '../../../scss/colors.scss';
 
 .weather {
-  max-width: 200px;
+  width: 190px;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 5px;
   background-color: $widget-background;
   backdrop-filter: blur(2px);
   border-radius: 8px;
@@ -26,6 +26,14 @@
     margin-top: 8px;
   }
 
+  &__description {
+    width: 100%;
+    font-size: 1.4rem;
+    border-bottom: 1px solid $primary;
+    padding-bottom: 13px;
+    text-align: center;
+  }
+
   &__info {
     width: 100%;
     display: flex;
@@ -33,22 +41,19 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
-    border-bottom: 1px solid $primary;
-    padding-bottom: 13px;
-    font-size: 1.4rem;
+    border-top: 1px solid $primary;
   }
 
   &__city {
     width: 100%;
     height: 34px;
-    padding: 0 15px 8px;
+    padding: 0 15px;
     font-size: 1.8rem;
     font-weight: 700;
     line-height: 24px;
     color: $light;
     border: 0;
     outline: 0;
-    border-bottom: 1px solid $primary;
     background-color: transparent;
 
     &::placeholder {
@@ -56,5 +61,10 @@
       color: $light;
       opacity: 0.6;
     }
+  }
+
+  &__error {
+    font-size: 1.8rem;
+    margin: 10px;
   }
 }

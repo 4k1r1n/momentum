@@ -2,7 +2,7 @@
   width: 100%;
 
   &__wrapper {
-    min-height: 240px;
+    min-height: 230px;
     margin-top: 10px;
     display: flex;
     justify-content: space-around;
@@ -11,6 +11,6 @@
   }
 
   &__weather {
-    padding: 15px 0;
+    padding: 10px 0;
   }
 }
